@@ -1,20 +1,56 @@
 package com.example.sertifikasi
 
+
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 
 class InformasiActivity : AppCompatActivity() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var userAdapter: UserAdapter
+    private lateinit var databaseUsers: DatabaseReference
+    private val users = mutableListOf<User>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_informasi)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        // Inisialisasi Firebase
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users")
+
+        // Inisialisasi RecyclerView
+        recyclerView = findViewById(R.id.recyclerViewUsers)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        userAdapter = UserAdapter(users)
+        recyclerView.adapter = userAdapter
+
+        // Ambil data dari Firebase
+        fetchUsers()
+    }
+
+    private fun fetchUsers() {
+        databaseUsers.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                users.clear()
+                for (userSnapshot in snapshot.children) {
+                    val user = userSnapshot.getValue(User::class.java)
+                    if (user != null) {
+                        users.add(user)
+                    }
+                }
+                userAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle possible errors.
+            }
+        })
     }
 }

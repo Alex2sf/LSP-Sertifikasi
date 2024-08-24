@@ -28,9 +28,9 @@ import com.google.android.gms.location.LocationServices
 
 class FormEntryActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private lateinit var imageViewProfile: ImageView
     private lateinit var buttonChooseImage: Button
+    private lateinit var buttonAddLocation: Button
     private lateinit var editTextNIK: EditText
     private lateinit var editTextName: EditText
     private lateinit var editTextPhone: EditText
@@ -40,10 +40,11 @@ class FormEntryActivity : AppCompatActivity() {
     private lateinit var databaseUsers: DatabaseReference
     private lateinit var storageReference: StorageReference
     private var imageUri: Uri? = null
+    private var locationText: String? = null
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
-
+        private const val REQUEST_LOCATION_PERMISSION = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,12 +58,16 @@ class FormEntryActivity : AppCompatActivity() {
         // Inisialisasi Views
         imageViewProfile = findViewById(R.id.imageViewProfile)
         buttonChooseImage = findViewById(R.id.buttonChooseImage)
+        buttonAddLocation = findViewById(R.id.buttonAddLocation)
         editTextNIK = findViewById(R.id.editTextNIK)
         editTextName = findViewById(R.id.editTextName)
         editTextPhone = findViewById(R.id.editTextPhone)
         editTextDate = findViewById(R.id.editTextDate)
         radioGroupGender = findViewById(R.id.radioGroupGender)
         buttonSubmit = findViewById(R.id.buttonSubmit)
+
+        // Inisialisasi FusedLocationProviderClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Pilih gambar dari galeri
         buttonChooseImage.setOnClickListener {
@@ -72,6 +77,15 @@ class FormEntryActivity : AppCompatActivity() {
         // Tanggal pendataan (Pilih tanggal)
         editTextDate.setOnClickListener {
             showDatePickerDialog()
+        }
+
+        // Tombol tambah lokasi
+        buttonAddLocation.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+            } else {
+                getLocation()
+            }
         }
 
         // Tombol submit untuk menyimpan data
@@ -131,9 +145,6 @@ class FormEntryActivity : AppCompatActivity() {
             }
     }
 
-
-
-
     private fun saveUserData(imageUrl: String) {
         val nik = editTextNIK.text.toString().trim()
         val name = editTextName.text.toString().trim()
@@ -152,12 +163,41 @@ class FormEntryActivity : AppCompatActivity() {
 
         // Simpan data ke Firebase Database
         val id = databaseUsers.push().key
-        val user = User(nik, name, phone, gender, date, imageUrl)
+        val user = User(nik, name, phone, gender, date, imageUrl, locationText ?: "Tidak Tersedia")
         if (id != null) {
             databaseUsers.child(id).setValue(user)
             Toast.makeText(this, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
             resetForm()
         }
+    }
+
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    locationText = "Lat: ${location.latitude}, Lon: ${location.longitude}"
+                    Toast.makeText(this, "Lokasi: $locationText", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Gagal mendapatkan lokasi", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun resetForm() {
@@ -168,5 +208,17 @@ class FormEntryActivity : AppCompatActivity() {
         radioGroupGender.clearCheck()
         imageViewProfile.setImageResource(R.drawable.ic_launcher_background)
         imageUri = null
+        locationText = null
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocation()
+            } else {
+                Toast.makeText(this, "Izin lokasi diperlukan untuk mendapatkan lokasi", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

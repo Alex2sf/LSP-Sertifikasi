@@ -72,6 +72,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation(libs.firebase.storage)
     implementation("com.google.android.gms:play-services-maps:18.0.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

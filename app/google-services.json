@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "143403799924",
+    "firebase_url": "https://sertifikasi-502bd-default-rtdb.firebaseio.com",
+    "project_id": "sertifikasi-502bd",
+    "storage_bucket": "sertifikasi-502bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143403799924:android:c78d5405767d03d8f30821",
+        "android_client_info": {
+          "package_name": "com.example.sertifikasi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDprTilRYi3s4nXkc0ACQqFyV7FKgW_X4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

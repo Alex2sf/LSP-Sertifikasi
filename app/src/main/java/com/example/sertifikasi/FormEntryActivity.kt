@@ -29,6 +29,8 @@ class FormEntryActivity : AppCompatActivity() {
     private lateinit var databaseUsers: DatabaseReference
     private lateinit var storageReference: StorageReference
     private var imageUri: Uri? = null
+    private lateinit var buttonLihatLokasi: Button
+
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
@@ -52,6 +54,7 @@ class FormEntryActivity : AppCompatActivity() {
         editTextAddress = findViewById(R.id.editTextAddress)
         radioGroupGender = findViewById(R.id.radioGroupGender)
         buttonSubmit = findViewById(R.id.buttonSubmit)
+        buttonLihatLokasi = findViewById(R.id.buttonLihatLokasi) // Tambahkan inisialisasi buttonLihatLokasi
 
         // Pilih gambar dari galeri
         buttonChooseImage.setOnClickListener {
@@ -87,7 +90,14 @@ class FormEntryActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // Tambahkan tombol "Lihat Lokasi Terkini"
+        buttonLihatLokasi.setOnClickListener {
+            val intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+        }
     }
+
     private fun getSelectedGender(): String {
         val selectedGenderId = radioGroupGender.checkedRadioButtonId
         val radioGenderButton = findViewById<RadioButton>(selectedGenderId)

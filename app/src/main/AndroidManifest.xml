@@ -21,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sertifikasi"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA06Q5ecgWuZKm4oqlQPVhZ74l4sd2vc4U" />
         <activity
             android:name=".DetailActivity"
             android:exported="false" />

@@ -46,6 +46,14 @@
         android:hint="Alamat"
         android:inputType="textPostalAddress" />
 
+    <Button
+        android:id="@+id/buttonLihatLokasi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lihat Lokasi Terkini"
+        android:layout_marginTop="16dp" />
+
+
     <RadioGroup
         android:id="@+id/radioGroupGender"
         android:layout_width="match_parent"

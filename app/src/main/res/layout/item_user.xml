@@ -7,10 +7,11 @@
 
     <ImageView
         android:id="@+id/imageViewProfile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
-        android:src="@drawable/user" />
+        android:src="@drawable/ic_launcher_background"
+        android:contentDescription="Profile Image" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,17 +23,16 @@
             android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:text="helo"/>
+            android:text="Nama Lengkap"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:text="helo"/>
+            android:text="Nomor Handphone"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

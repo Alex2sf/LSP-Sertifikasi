@@ -58,13 +58,6 @@
             android:text="Perempuan" />
     </RadioGroup>
 
-    <Button
-        android:id="@+id/buttonAddLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Location" />
-
-
     <EditText
         android:id="@+id/editTextDate"
         android:layout_width="match_parent"

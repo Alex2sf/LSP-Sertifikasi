@@ -1,4 +1,5 @@
 package com.example.sertifikasi
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -32,10 +33,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Button for LogoutActivity
+        // Button for LogoutActivity
         val btnLogout = findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {
-            val intent = Intent(this, LogoutActivity::class.java)
-            startActivity(intent)
+            finishAffinity() // Menutup aplikasi
         }
+
     }
 }

@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.sertifikasi.User
 
 class DetailActivity : AppCompatActivity() {
 
@@ -15,16 +14,19 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var textViewPhone: TextView
     private lateinit var textViewGender: TextView
     private lateinit var textViewDate: TextView
+    private lateinit var textViewAddress: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
         imageViewProfile = findViewById(R.id.imageViewProfileDetail)
         textViewNIK = findViewById(R.id.textViewNIK)
         textViewName = findViewById(R.id.textViewName)
         textViewPhone = findViewById(R.id.textViewPhone)
         textViewGender = findViewById(R.id.textViewGender)
         textViewDate = findViewById(R.id.textViewDate)
+        textViewAddress = findViewById(R.id.textViewAddress) // Tambahkan ini untuk alamat
 
         val user = intent.getParcelableExtra<User>("EXTRA_USER")
 
@@ -38,6 +40,7 @@ class DetailActivity : AppCompatActivity() {
             textViewPhone.text = user.phone
             textViewGender.text = user.gender
             textViewDate.text = user.date
+            textViewAddress.text = user.address // Tampilkan alamat
         }
     }
 }

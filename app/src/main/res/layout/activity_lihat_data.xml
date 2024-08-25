@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/user" <!-- Ganti dengan nama gambar drawable Anda -->
-    android:contentDescription="@string/profile_image" />
+        android:src="@drawable/user" />
 
     <!-- Nama -->
     <TextView
